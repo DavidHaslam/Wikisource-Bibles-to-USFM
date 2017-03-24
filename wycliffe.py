@@ -138,7 +138,7 @@ for i in range(len(WSbooks)):
     USFMdoc = codecs.open('wycliffe_'+USFMnumber[i]+'_'+USFMbook[i]+'.usfm', 'w', 'utf-8')
     
     USFMdoc.write('\\id '+USFMbook[i]+'\n')
-    USFMdoc.write('\\rem Converted from source text at https:\\\\en.wikisource.org\\wiki\\Bible_(Wycliffe)\n')
+    USFMdoc.write('\\rem Converted from source text at https://en.wikisource.org/wiki/Bible_(Wycliffe)\n')
     USFMdoc.write('\\mt1 '+WSbooks[i]+'\n')
     USFMdoc.write('\\toc1 '+WSbooks[i]+'\n')
     USFMdoc.write('\\toc2 '+WSbooks[i]+'\n')
