@@ -116,14 +116,27 @@ for i in range(len(WSbooks)):
 
     inputDoc = re.sub('  +', ' ', inputDoc)
 
+		# first convert entities within the special download text (extend this if required)
+    inputDoc = re.sub(r'&lt;', '<', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'&gt;', '>', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    # that makes the subsequent code below easier to read 
+		
     inputDoc = re.sub(r'{{header.+?}}', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-    inputDoc = re.sub(r'&lt;div style=.+?/div&gt;', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'<div style=.+?/div>', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
     inputDoc = re.sub(r'{{Other versions.+?}}', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
     inputDoc = re.sub(r'{{biblecontents.+?}}.*', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
     inputDoc = re.sub(r'\[\[Category.+?\]\]', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-    inputDoc = re.sub(r'&lt;section .+?&gt;', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-    inputDoc = re.sub(r'&lt;onlyinclude&gt;{{{.+?\|\s*(.+?)}}}&lt;/onlyinclude&gt;', r'\1', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-    inputDoc = re.sub(r'&lt;/?onlyinclude&gt; *', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'<section .+?>', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'<onlyinclude>{{{.+?\|\s*(.+?)}}}</onlyinclude>', r'\1', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'</?onlyinclude> *', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+
+#   inputDoc = re.sub(r'\[Note:(.+?) +\]', r'\\f + \1\\f*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'<ref>(.+?)</ref>', r'\\f + \1\\f*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'\[Note: ', r'', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'\]\\', r'\\', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'\[(.+?)\]', r'\\it \1\\it*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+#   inputDoc = re.sub(r'\[(.+?)\]', r'\\add \1\\add*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
+    inputDoc = re.sub(r'<references\s*/>', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
 
     inputDoc = re.sub(r'==Chapter \d+==', '', inputDoc, flags=re.IGNORECASE)
 
@@ -131,9 +144,6 @@ for i in range(len(WSbooks)):
     inputDoc = re.sub(r'{{verse\|chapter=\d+\|verse=(\d+)}}\s*', r'\\v \1 ', inputDoc, flags=re.IGNORECASE)
 
     inputDoc = re.sub(r'==External links==.+', '', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-
-    inputDoc = re.sub(r'\[Note:(.+?) +\]', r'\\f + \1\\f*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
-    inputDoc = re.sub(r'\[(.+?)\]', r'\\it \1\\it*', inputDoc, flags=re.DOTALL|re.IGNORECASE)
 
     USFMdoc = codecs.open('wycliffe_'+USFMnumber[i]+'_'+USFMbook[i]+'.usfm', 'w', 'utf-8')
     
